@@ -36,6 +36,9 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   // find a single product by its `id`
   Product.findOne({
+    where:{
+        id: req.params.id
+      },
     attributes:[
         'id',
         'product_name',
@@ -131,7 +134,7 @@ router.put('/:id', (req, res) => {
       // run both actions
       return Promise.all([
         ProductTag.destroy({ where: { id: productTagsToRemove } }),
-        ProductTag.bulkCreate(newProductTags),
+        ProductTag.bulkCreate(newProductTags)
       ]);
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
@@ -157,7 +160,7 @@ router.delete('/:id', (req, res) => {
   })
   .catch(err => {
     console.log(err);
-    res,status(500).json(err);
+    res.status(500).json(err);
   });
 });
 
